@@ -46,7 +46,7 @@ class RestRepository : IDataRepository {
             }
         }
 
-        fun urlEncode(item: String): String = URLEncoder.encode(item, "UTF-8")
+        fun urlEncode(item: String): String = item.replace(" ", "%20")
     }
 
     private val url = "http://skynetgdl.azurewebsites.net/api"
@@ -112,8 +112,9 @@ class RestRepository : IDataRepository {
     }
 
     override fun getZone(name: String): CompletableFuture<Zone?> {
+        val encodedName = urlEncode(name)
+        Log.wtf("Encoded", name)
         return supplyAsync {
-            val encodedName = urlEncode(name)
             val connection = URL("$url/zones/$encodedName")
                 .openConnection() as HttpURLConnection
             connection.requestMethod = "GET"

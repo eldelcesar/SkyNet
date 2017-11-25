@@ -69,6 +69,7 @@ object LoginService {
                 connection.disconnect()
                 val loginResponseData = RestRepository.gson.fromJson(rawJson, LoginResponse::class.java)
                 this.credentials = loginResponseData
+                Log.wtf("Token", this.credentials.access_token)
                 return@handleResponseCode this.credentials
             }
         }
